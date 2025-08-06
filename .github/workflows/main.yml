@@ -368,7 +368,7 @@ jobs:
             python3 .github/workflows/build_and_test.py ${{ runner.os }} x86 ${{ matrix.compiler }} ${{ matrix.version }}
         run: docker exec build-container bash -c "$CMD"
 
-  ci-min-gw:
+  ci-mingw-w64:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on: windows-latest
 
@@ -380,8 +380,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up MinGW
+      - name: Set up MinGW-w64
         uses: egor-tensin/setup-mingw@v2
+        with:
+          version: 12.2.0
 
       - name: Generate
         run: cmake -B build -S . -G "MinGW Makefiles" -D CMAKE_BUILD_TYPE=${{ matrix.configuration }}
